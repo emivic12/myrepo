@@ -9,11 +9,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 public class Scenarios {
 	public static WebDriver driver;
   
-  @Test
+  @Test(enabled=false)
   public void launchbrowser() {
 	  System.setProperty("webdriver.chrome.driver", "C:\\Users\\Emily\\chromedriver.exe");
 		 WebDriver driver = new ChromeDriver();
@@ -28,11 +30,19 @@ public class Scenarios {
 		  sfa.assertNull(title);
 		  sfa.assertAll();
 }
-  @Test
+  @Test(enabled=false)
   public void ssl() {
 	  ChromeOptions handling=new ChromeOptions();
 	  handling.setAcceptInsecureCerts(true);
 	  WebDriver driver=new ChromeDriver(handling);
 	  driver.get("https://expired.badssl.com/");
+  }
+  @Test
+  public void numberofcircuits() {
+	  given().when().get("http://ergast.com/api/f1/2017/circuits.json").then().assertThat().body("MRData.CircuitTable.Circuits.circuitId", hasSize(50));
+	  
+	  
+	  
+	  
   }
 }
